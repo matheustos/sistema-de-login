@@ -32,6 +32,17 @@ def criar(nome, email, senha, data_nascimento, cpf, rg):
     cursor.close()
     conexao.close()
 
+def buscar(tabela, condicao):
+
+    cursor = conexao.cursor()
+    comando_leitor = f"SELECT * FROM {tabela} WHERE email = '{condicao}'"
+    cursor.execute(comando_leitor)
+    resultado = cursor.fetchone()
+    cursor.close()
+    conexao.close()
+    return resultado
+
+
 
 
 

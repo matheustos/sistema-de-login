@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from bd import criar, buscar
+from bd import criar, buscar, buscar_senha, update_senha
 from hashlib import sha256
 
 app = Flask(__name__)
@@ -53,7 +53,33 @@ def validar_login():
     except:
         return jsonify({"message": "Erro ao realizar buscar no banco de dados."})
 
+@app.route('/esqueceu-a-senha', methods=['POST'])
+def realizar_reset_senha():
 
+    dados_nova_senha = request.get_json()
+
+    nova_senha = dados_nova_senha['senha']
+    # Cria um objeto hash SHA-256
+    hash = sha256(nova_senha.encode())
+
+    # Obtém o hash resultante em formato hexadecimal
+    hash_senha = hash.hexdigest()
+
+    resultado = buscar_senha(email=dados_nova_senha['email'], cpf=dados_nova_senha['cpf'], tabela="cadastro")
+
+    if len(resultado) != 0:    
+        try:
+            update_senha(senha=hash_senha, email=dados_nova_senha['email'], cpf=dados_nova_senha['cpf'])
+        except:
+            return jsonify({"message": "ERRO"})
+        else:
+            return jsonify({"message": "OK"})
+        
+        
+    else:
+        return jsonify({
+            "message": "Não foi encontrado usuário com esses dados cadastrados."
+        })
 
 
 

@@ -29,8 +29,7 @@ def criar(nome, email, senha, data_nascimento, cpf, rg):
     comando = f"INSERT INTO cadastro(nome, email, senha, data_nascimento, cpf, rg) VALUES ('{nome}', '{email}', '{senha}', '{data_nascimento}', '{cpf}', '{rg}')"
     cursor.execute(comando)
     conexao.commit()
-    cursor.close()
-    conexao.close()
+
 
 def buscar(tabela, condicao):
 
@@ -38,19 +37,20 @@ def buscar(tabela, condicao):
     comando_leitor = f"SELECT * FROM {tabela} WHERE email = '{condicao}'"
     cursor.execute(comando_leitor)
     resultado = cursor.fetchone()
-    cursor.close()
-    conexao.close()
+    return resultado
+
+def buscar_senha(email, cpf, tabela):
+    cursor = conexao.cursor()
+    comando_leitor = f"SELECT * FROM {tabela} WHERE email = '{email}' AND {cpf}"
+    cursor.execute(comando_leitor)
+    resultado = cursor.fetchone()
     return resultado
 
 
-
-
-
-
-
-
-
-
+def update_senha(senha, email, cpf):
+    comando = f"UPDATE cadastro SET senha = '{senha}' WHERE email = '{email}' AND cpf = '{cpf}'"
+    cursor.execute(comando)
+    conexao.commit()
 
 
 

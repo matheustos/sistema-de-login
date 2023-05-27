@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from bd import criar, buscar, buscar_senha, update_senha
 from hashlib import sha256
+import re
 
 app = Flask(__name__)
 
@@ -9,22 +10,47 @@ app = Flask(__name__)
 def criar_cadastro():
     dados = request.get_json()
 
-    senha = dados['senha']
-    # Cria um objeto hash SHA-256
-    hash = sha256(senha.encode())
+    # função para verificar se existem caracteres especiais na senha passada
+    def possui_numeros_ou_especiais(string):
+        padrao = r'[0-9!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~]'
+        if re.search(padrao, string):
+            return True
+        else:
+            return False
 
-    # Obtém o hash resultante em formato hexadecimal
-    hash_senha = hash.hexdigest()
 
-    try:
-        criar(nome=dados['nome'], email=dados['email'], senha=hash_senha, data_nascimento=dados['data_nascimento'], cpf=dados['cpf'], rg=dados['rg'])
-    except:
+    resposta = possui_numeros_ou_especiais(string=dados['senha'])
+
+    # verifica se a senha informado contem 8 ou mais caracteres
+    if len(dados['senha']) >= 8:
+        # caso a senha tenha 8 ou mais números, verifica se a resposta da função acima é True
+        if resposta == True:
+            senha = dados['senha']
+            # Cria um objeto hash SHA-256
+            hash = sha256(senha.encode())
+
+            # Obtém o hash resultante em formato hexadecimal
+            hash_senha = hash.hexdigest()
+
+            try:
+                criar(nome=dados['nome'], email=dados['email'], senha=hash_senha, data_nascimento=dados['data_nascimento'], cpf=dados['cpf'], rg=dados['rg'])
+            except:
+                return jsonify({
+                    "message": "Erro ao cadastrar no banco de dados!"
+                })
+            else: 
+                return jsonify({
+                    "message": "Dados cadastrados com sucesso!"
+                })
+        # caso a função não retorne uma resposta True, avisa ao usuário que a senha deve conter caracteres especiais
+        else:
+            return jsonify({
+                "message": "A senha deve conter caracteres especiais"
+            })
+    # caso a função não retorne uma resposta True, avisa ao usuário que a senha deve conter 8 ou mais caracteres
+    else:
         return jsonify({
-            "message": "Erro ao cadastrar no banco de dados!"
-        })
-    else: 
-        return jsonify({
-            "message": "Dados cadastrados com sucesso!"
+            "message": "A senha deve ter no mínimo 8 caracteres"
         })
     
 # rota para validar login
@@ -59,26 +85,54 @@ def realizar_reset_senha():
     dados_nova_senha = request.get_json()
 
     nova_senha = dados_nova_senha['senha']
-    # Cria um objeto hash SHA-256
-    hash = sha256(nova_senha.encode())
 
-    # Obtém o hash resultante em formato hexadecimal
-    hash_senha = hash.hexdigest()
-
-    resultado = buscar_senha(email=dados_nova_senha['email'], cpf=dados_nova_senha['cpf'], tabela="cadastro")
-
-    if len(resultado) != 0:    
-        try:
-            update_senha(senha=hash_senha, email=dados_nova_senha['email'], cpf=dados_nova_senha['cpf'])
-        except:
-            return jsonify({"message": "ERRO"})
+    # função para verificar se existem caracteres especiais na nova senha passada
+    def possui_numeros_ou_especiais(string):
+        padrao = r'[0-9!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~]'
+        if re.search(padrao, string):
+            return True
         else:
-            return jsonify({"message": "OK"})
-        
-        
+            return False
+
+
+    resposta = possui_numeros_ou_especiais(string=dados_nova_senha['senha'])
+    
+    # verifica se a senha informado contem 8 ou mais caracteres
+    if len(dados_nova_senha['senha']) >= 8:
+        # caso a senha tenha 8 ou mais números, verifica se a resposta da função acima é True
+        if resposta == True:
+            # Cria um objeto hash SHA-256
+            hash = sha256(nova_senha.encode())
+
+            # Obtém o hash resultante em formato hexadecimal
+            hash_senha = hash.hexdigest()
+
+            resultado = buscar_senha(email=dados_nova_senha['email'], cpf=dados_nova_senha['cpf'], tabela="cadastro")
+
+            if len(resultado) != 0:    
+                try:
+                    update_senha(senha=hash_senha, email=dados_nova_senha['email'], cpf=dados_nova_senha['cpf'])
+                except:
+                    return jsonify({"message": "ERRO"})
+                else:
+                    return jsonify({"message": "OK"})
+                
+                
+            else:
+                return jsonify({
+                    "message": "Não foi encontrado usuário com esses dados cadastrados."
+                })
+            
+         # caso a função não retorne uma resposta True, avisa ao usuário que a senha deve conter caracteres especiais
+        else:
+            return jsonify({
+                "message": "A senha deve conter caracteres especiais"
+            })
+       
+    # caso a função não retorne uma resposta True, avisa ao usuário que a senha deve conter 8 ou mais caracteres
     else:
         return jsonify({
-            "message": "Não foi encontrado usuário com esses dados cadastrados."
+            "message": "A senha deve ter no mínimo 8 caracteres"
         })
 
 

@@ -41,7 +41,7 @@ def buscar(tabela, condicao):
 
 def buscar_senha(email, cpf, tabela):
     cursor = conexao.cursor()
-    comando_leitor = f"SELECT * FROM {tabela} WHERE email = '{email}' AND {cpf}"
+    comando_leitor = f"SELECT * FROM {tabela} WHERE email = '{email}' AND '{cpf}'"
     cursor.execute(comando_leitor)
     resultado = cursor.fetchone()
     return resultado
@@ -49,6 +49,26 @@ def buscar_senha(email, cpf, tabela):
 
 def update_senha(senha, email, cpf):
     comando = f"UPDATE cadastro SET senha = '{senha}' WHERE email = '{email}' AND cpf = '{cpf}'"
+    cursor.execute(comando)
+    conexao.commit()
+
+def localiza_cpf(cpf):
+    cursor = conexao.cursor()
+    comando_leitor = f"SELECT * FROM cadastro WHERE cpf = '{cpf}'"
+    cursor.execute(comando_leitor)
+    resultado = cursor.fetchone()
+    return resultado
+
+
+def localiza_usuarios():
+    cursor = conexao.cursor()
+    comando_leitor = f"SELECT * FROM cadastro"
+    cursor.execute(comando_leitor)
+    resultado = cursor.fetchall()
+    return resultado   
+
+def deleta_usuario(cpf):
+    comando = f"DELETE FROM cadastro WHERE cpf = '{cpf}'"
     cursor.execute(comando)
     conexao.commit()
 

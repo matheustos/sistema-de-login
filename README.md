@@ -26,4 +26,4 @@ Sistema de cadastro e login de usuários em python!
 11 - Para deslogar, clique no botão "Sair" e automaticamente será relizado o logout.
 
 
-OBS: Para esse projeto não foi utilizado css já que a intenção era dá foco a parte de back-end com python.
+OBS: Para esse projeto não foi utilizado css já que a intenção era dar foco a parte de back-end com python.

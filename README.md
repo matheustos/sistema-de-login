@@ -7,7 +7,7 @@ Sistema de cadastro e login de usuários em python!
 
 2 - Instale o flask e o mysql-connect, não será necessário instalar as demais bibliotecas pois são nativas do python.
 
-3 - É necessário ter o mysql bem como um servidor instalados na sua máquina. Exemplos de servidor (Windows: Wamp server, Linux: Lamp server, Xampp (para ambos os sistemas operacionais).
+3 - É necessário ter o mysql bem como um servidor instalados na sua máquina. Exemplos de servidor (Windows: Wamp server, Linux: Lamp server, Xampp (para ambos os sistemas operacionais)).
 
 4 - Com tudo configurado corretamente, crie seu banco de dados e passe as informações como parâmetro na variável conexao do arquivo bd.py.
 

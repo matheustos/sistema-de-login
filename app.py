@@ -2,7 +2,6 @@ from flask import Flask, request, redirect, render_template, url_for, session
 from bd import criar, buscar, buscar_senha, update_senha, localiza_cpf
 from hashlib import sha256
 import re
-from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta'

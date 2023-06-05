@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrar</title>
+</head>
+<body>
+    <h1>Registrar</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="POST" action="/register">
+        <input type="text" name="nome" placeholder="nome"><br>
+        <input type="email" name="email" placeholder="email"><br>
+        <input type="password" name="senha" placeholder="senha"><br>
+        <input type="text" name="data_nascimento" placeholder="data de nascimento"><br>
+        <input type="text" name="cpf" placeholder="cpf"><br>
+        <input type="text" name="rg" placeholder="rg"><br>
+        <input type="submit" value="Registrar">
+    </form>
+</body>
+</html>

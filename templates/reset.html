@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset</title>
+</head>
+<body>
+    <h1>Reset de senha</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="POST" action="/esqueceu-a-senha">
+        <label for="email">E-mail:</label>
+        <input type="email" name="email" id="email" required><br>
+
+        <label for="cpf">Cpf:</label>
+        <input type="text" name="cpf" id="cpf" required><br>
+
+        <label for="password">Insira a nova senha:</label>
+        <input type="password" name="senha" id="password" required><br>
+
+        <label for="password">Confirme a nova senha:</label>
+        <input type="password" name="senha_ok" id="password" required><br>
+        
+        <input type="submit" value="Alterar senha">
+    </form>
+    <p>Faça o login novamente<a href="/login">Login</a>
+</body>
+</html>

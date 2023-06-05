@@ -60,26 +60,5 @@ def localiza_cpf(cpf):
     return resultado
 
 
-def localiza_usuarios():
-    cursor = conexao.cursor()
-    comando_leitor = f"SELECT * FROM cadastro"
-    cursor.execute(comando_leitor)
-    resultado = cursor.fetchall()
-    return resultado   
-
-def deleta_usuario(cpf):
-    comando = f"DELETE FROM cadastro WHERE cpf = '{cpf}'"
-    cursor.execute(comando)
-    conexao.commit()
-
-
-
-
-
-
-
-
-
-
 cursor.close
 conexao.close

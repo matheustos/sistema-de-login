@@ -114,7 +114,7 @@ def login():
                     return redirect(url_for('sucesso'))
                 else:
                     # Tratamento para falha na autenticação
-                    error = "Falha ao atenticar"
+                    error = "Email e/ou senha incorretos."
                     return render_template('login.html', error=error)
             else:
                 # informa que os dados passados estão incorretos

@@ -95,7 +95,7 @@ def login():
             return render_template('login.html', error=error)
         # checa email e senha
         else:
-            if len(resultado) != 0:
+            if resultado is not None:
                 email = resultado[2]
                 senha = resultado[3]
                 id = resultado[0]
@@ -104,10 +104,6 @@ def login():
                     # libera o login se as informações coincidirem
                     if email == email and senha == hash_senha:
                         return id
-                    # informa que os dados passados estão incorretos
-                    else:
-                        error = "Email e/ou senha incorretos."
-                        return render_template('login.html', error=error)
                 
                 # Após autenticar o usuário, adicione o ID do usuário à sessão
                 user_id = autentic()
@@ -118,7 +114,12 @@ def login():
                     return redirect(url_for('sucesso'))
                 else:
                     # Tratamento para falha na autenticação
-                    return redirect(url_for('login'))
+                    error = "Falha ao atenticar"
+                    return render_template('login.html', error=error)
+            else:
+                # informa que os dados passados estão incorretos
+                error = "Email e/ou senha incorretos."
+                return render_template('login.html', error=error)
                 
                 
     else:
